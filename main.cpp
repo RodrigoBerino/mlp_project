@@ -6,10 +6,10 @@
 #include "loss_functions.h"
 
 int main() {
-    // Configuração da rede: 2 entradas, 4 neurônios na camada oculta, 1 saída
+    // configuração da rede: 2 entradas, 4 neurônios na camada oculta, 1 saída
     std::vector<size_t> config = {2, 4, 1};
 
-    // Instanciação da MLP usando templates e functors
+    // instanciação da MLP usando templates e functors
     // Tipo: double, Ativação Oculta: Tanh, Ativação Saída: Sigmoid, Custo: MSE
     MLP<double, Tanh<double>, Sigmoid<double>, MSE<double>> my_mlp(config);
 

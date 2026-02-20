@@ -1,0 +1,92 @@
+*****Eder falou que a primeira sera só MLP, nas proximas apresentações serão projetos que ele vai decidir 
+
+
+https://drive.google.com/drive/folders/1eypveSm2FmtOYp72wiWxq650qYokEGNu
+
+
+git clone git@github.com:RodrigoBerino/mlp_project.git
+
+https://github.com/RodrigoBerino/mlp_project.git
+
+https://dai.fmph.uniba.sk/courses/NN/haykin.neural-networks.3ed.2009.pdf
+
+
+//functors
+//mlp tem que receber template
+
+
+https://www.geeksforgeeks.org/cpp/functors-in-cpp/
+
+
+--------------------------------- ATIVIDADE ------------------------------------------------------
+
+
+Desenvolva um projeto em C++ que implemente uma MLP (Multi-Layer Perceptron) utilizando templates e functors.
+
+O projeto deve atender aos seguintes requisitos:
+
+Estrutura Geral
+
+Implementar uma rede neural do tipo MLP com pelo menos:
+
+Camada de entrada
+
+Pelo menos uma camada oculta
+
+Camada de saída
+
+Permitir configuração do número de neurônios por camada.
+
+Uso de Templates
+
+Utilizar templates para:
+
+Definir o tipo numérico (ex: float, double)
+
+Permitir diferentes funções de ativação
+
+Possibilitar flexibilidade no número de entradas e saídas (quando aplicável)
+
+Uso de Functors
+
+Implementar as funções de ativação como functors (sobrecarga do operador ()).
+
+Exemplos de funções de ativação a serem implementadas:
+
+Sigmoid
+
+ReLU
+
+Tanh
+
+Permitir que a função de ativação seja passada como parâmetro template para a classe da camada ou da rede.
+
+Funcionalidades Obrigatórias
+
+Inicialização dos pesos (aleatória).
+
+Forward pass (propagação direta).
+
+Backpropagation.
+
+Atualização dos pesos com taxa de aprendizado configurável.
+
+Treinamento com um pequeno conjunto de dados de exemplo (ex: problema XOR).
+
+Organização do Projeto
+
+Separação em múltiplos arquivos (.h e .cpp, se aplicável).
+
+Uso de boas práticas de programação orientada a objetos.
+
+Comentários explicando as partes principais do código.
+
+Extras (Opcional para nota máxima)
+
+Implementar função de custo como template/functor.
+
+Permitir diferentes estratégias de inicialização.
+
+Criar testes simples para validar o funcionamento.
+
+O projeto deve compilar utilizando um compilador compatível com C++17 ou superior.

@@ -15,23 +15,26 @@
  * @tparam Loss Functor da função de custo.
  */
 template <typename T, typename HiddenActivation, typename OutputActivation, typename Loss>
+
 class MLP {
+
 public:
+
     MLP(const std::vector<size_t>& layers_config) {
         if (layers_config.size() < 2) {
-            throw std::invalid_argument("A configuração da rede deve ter pelo menos uma camada de entrada e uma de saída.");
+            throw std::invalid_argument("pelo menos uma camada de entrada e uma de saída.");
         }
 
-        // Cria as camadas ocultas
+        // cria as camadas ocultas
         for (size_t i = 0; i < layers_config.size() - 2; ++i) {
             hidden_layers.push_back(std::make_unique<Layer<T, HiddenActivation>>(layers_config[i], layers_config[i+1]));
         }
-        // Cria a camada de saída
+        // cria a camada de saída
         output_layer = std::make_unique<Layer<T, OutputActivation>>(layers_config[layers_config.size() - 2], layers_config.back());
     }
 
     /**
-     * @brief Realiza a propagação direta por toda a rede.
+     * @brief propagação direta por toda a rede.
      */
     std::vector<T> forward(const std::vector<T>& input) {
         std::vector<T> current_output = input;
@@ -42,12 +45,11 @@ public:
     }
 
     /**
-     * @brief Realiza o backpropagation e atualiza os pesos.
+     * @brief backpropagation e atualiza os pesos.
      */
     void train(const std::vector<T>& input, const std::vector<T>& target, T learning_rate) {
         // 1. Forward pass para obter as saídas atuais
         std::vector<T> output = forward(input);
-
         // 2. Calcular o erro (delta) na camada de saída
         Loss loss_func;
         OutputActivation out_act;

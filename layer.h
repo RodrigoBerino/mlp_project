@@ -7,15 +7,15 @@
 #include "activation_functions.h"
 
 /**
- * @brief Classe que representa uma camada da MLP.
+ * @brief classe que representa uma camada da MLP.
  * @tparam T Tipo numérico (float, double).
- * @tparam Activation Functor da função de ativação.
+ * @tparam activation Functor da função de ativação.
  */
 template <typename T, typename Activation>
+
 class Layer {
-public:
-    Layer(size_t input_size, size_t output_size)
-        : weights(output_size, std::vector<T>(input_size)),
+
+public: Layer(size_t input_size, size_t output_size) : weights(output_size, std::vector<T>(input_size)),
           biases(output_size),
           outputs(output_size),
           inputs(input_size),
@@ -26,7 +26,7 @@ public:
     }
 
     /**
-     * @brief Realiza a propagação direta (forward pass) na camada.
+     * @brief (forward pass) na camada.
      */
     const std::vector<T>& forward(const std::vector<T>& input_data) {
         inputs = input_data;
