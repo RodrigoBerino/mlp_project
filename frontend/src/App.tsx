@@ -21,13 +21,12 @@ function App() {
     const file = event.dataTransfer.files[0];
     if (!file) return;
 
-    const droppedPath = (file as File & { path?: string }).path;
-    if (!droppedPath?.toLowerCase().endsWith(".csv")) {
+    if (!file.name.toLowerCase().endsWith(".csv")) {
       setError("Por favor, solte um arquivo CSV válido.");
       return;
     }
 
-    setCsvPath(droppedPath);
+    setCsvPath(file.name); // ou trate o file diretamente
     setError("");
   };
 
@@ -59,7 +58,7 @@ function App() {
 
   return (
     <main className="container">
-      <h3>MLP Desktop</h3>
+      <h1>MLP</h1>
 
       <section
         className="dropzone"
