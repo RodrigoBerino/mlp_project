@@ -88,5 +88,3 @@ Implementar função de custo como template/functor.
 Permitir diferentes estratégias de inicialização.
 
 Criar testes simples para validar o funcionamento.
-
-O projeto deve compilar utilizando um compilador compatível com C++17 ou superior.

@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  cpp-build-test:
+    name: C++ CI (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache CMake build directory
+        uses: actions/cache@v4
+        with:
+          path: |
+            build
+          key: ${{ runner.os }}-cmake-${{ hashFiles('CMakeLists.txt', 'cpp/**', '*.h', '*.hpp', '*.cpp') }}
+          restore-keys: |
+            ${{ runner.os }}-cmake-
+
+      - name: Configure (Release) - Linux
+        if: runner.os == 'Linux'
+        run: |
+          set -euo pipefail
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release 2>&1 | tee build/configure.log
+
+      - name: Configure (Release) - Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release *>&1 | Tee-Object -FilePath build/configure.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build (Release) - Linux
+        if: runner.os == 'Linux'
+        run: |
+          set -euo pipefail
+          cmake --build build --config Release --parallel 2>&1 | tee build/build.log
+
+      - name: Build (Release) - Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cmake --build build --config Release --parallel *>&1 | Tee-Object -FilePath build/build.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Run tests (if present) - Linux
+        if: runner.os == 'Linux'
+        run: |
+          set -euo pipefail
+          ctest --test-dir build -C Release --output-on-failure 2>&1 | tee build/test.log
+
+      - name: Run tests (if present) - Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          ctest --test-dir build -C Release --output-on-failure *>&1 | Tee-Object -FilePath build/test.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload compiled binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlp_inference-${{ runner.os }}
+          path: |
+            build/mlp_inference
+            build/Release/mlp_inference.exe
+          if-no-files-found: error
+
+      - name: Upload build logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs-${{ runner.os }}
+          path: |
+            build/configure.log
+            build/build.log
+            build/test.log
+          if-no-files-found: error
+
+  frontend-build:
+    name: Frontend CI (Ubuntu)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend/electron TypeScript
+        run: npm run build
+
+      - name: Upload frontend artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: |
+            dist
+            dist-electron
+          if-no-files-found: error
